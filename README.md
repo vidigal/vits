@@ -1,3 +1,6 @@
+# Fork do repositório oficial (Português do Brasil pt-BR)
+Versão para treinamento de vozes em português do Brasil
+
 # VITS: Conditional Variational Autoencoder with Adversarial Learning for End-to-End Text-to-Speech
 
 ### Jaehyeon Kim, Jungil Kong, and Juhee Son
