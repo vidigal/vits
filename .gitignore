@@ -1,7 +1,7 @@
 DUMMY1
 DUMMY2
 DUMMY3
-logs
+logs/
 __pycache__
 .ipynb_checkpoints
 .*.swp
@@ -9,3 +9,6 @@ __pycache__
 build
 *.c
 monotonic_align/monotonic_align
+data/
+output/
+pretrained/
