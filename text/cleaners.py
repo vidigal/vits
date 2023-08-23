@@ -15,31 +15,36 @@ hyperparameter. Some cleaners are English-specific. You'll typically want to use
 import re
 from unidecode import unidecode
 from phonemizer import phonemize
+import phonemizer
 
 
 # Regular expression matching whitespace:
 _whitespace_re = re.compile(r'\s+')
 
+backend_pt_br = phonemizer.backend.EspeakBackend(language='pt-br', preserve_punctuation=True, with_stress=True)
+
 # List of (regular expression, replacement) pairs for abbreviations:
 _abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in [
-  ('mrs', 'misess'),
-  ('mr', 'mister'),
-  ('dr', 'doctor'),
-  ('st', 'saint'),
-  ('co', 'company'),
-  ('jr', 'junior'),
-  ('maj', 'major'),
-  ('gen', 'general'),
-  ('drs', 'doctors'),
-  ('rev', 'reverend'),
-  ('lt', 'lieutenant'),
-  ('hon', 'honorable'),
-  ('sgt', 'sergeant'),
-  ('capt', 'captain'),
-  ('esq', 'esquire'),
-  ('ltd', 'limited'),
-  ('col', 'colonel'),
-  ('ft', 'fort'),
+  ('sra', 'senhora'),
+  ('senhor', 'senhor'),
+  ('dr', 'doutor'),
+  ('sto', 'santo'),
+  ('co', 'empresa'),
+  ('jr', 'júnior'),
+  ('maj', 'maior'),
+  ('gen', 'geral'),
+  ('drs', 'médicos'),
+  ('rev', 'reverendo'),
+  ('lt', 'tenente'),
+  ('honrado', 'honroso'),
+  ('sgt', 'sargento'),
+  ('cap', 'capitão'),
+  ('esq', 'esquideiro'),
+  ('ltda', 'limitada'),
+  ('cel', 'coronel'),
+  ('ft', 'forte'),
+  ('§', 'Parágrafo'),
+  ('etc', "eticétera")
 ]]
 
 
@@ -80,21 +85,33 @@ def transliteration_cleaners(text):
   return text
 
 
-def english_cleaners(text):
-  '''Pipeline for English text, including abbreviation expansion.'''
-  text = convert_to_ascii(text)
-  text = lowercase(text)
-  text = expand_abbreviations(text)
-  phonemes = phonemize(text, language='en-us', backend='espeak', strip=True)
-  phonemes = collapse_whitespace(phonemes)
-  return phonemes
+#def english_cleaners(text):
+#  '''Pipeline for English text, including abbreviation expansion.'''
+#  text = convert_to_ascii(text)
+#  text = lowercase(text)
+#  text = expand_abbreviations(text)
+#  phonemes = phonemize(text, language='en-us', backend='espeak', strip=True)
+#  phonemes = collapse_whitespace(phonemes)
+#  return phonemes
 
 
-def english_cleaners2(text):
-  '''Pipeline for English text, including abbreviation expansion. + punctuation + stress'''
-  text = convert_to_ascii(text)
-  text = lowercase(text)
+#def english_cleaners2(text):
+#  '''Pipeline for English text, including abbreviation expansion. + punctuation + stress'''
+#  text = convert_to_ascii(text)
+#  text = lowercase(text)
+#  text = expand_abbreviations(text)
+#  phonemes = phonemize(text, language='en-us', backend='espeak', strip=True, preserve_punctuation=True, with_stress=True)
+#  phonemes = collapse_whitespace(phonemes)
+#  return phonemes
+
+def portuguese_cleaners(text):
+  '''Pipeline for Portuguese text'''
+  # Accents and special characters are important in Portuguese
+  #text = convert_to_ascii(text)
+  #text = lowercase(text)
   text = expand_abbreviations(text)
-  phonemes = phonemize(text, language='en-us', backend='espeak', strip=True, preserve_punctuation=True, with_stress=True)
+  text = text.replace("*", "")
+  phonemes = backend_pt_br.phonemize(text, strip=True)
+  #phonemes = phonemize(text, language='pt-br', backend='espeak', strip=True, preserve_punctuation=True, with_stress=True)
   phonemes = collapse_whitespace(phonemes)
   return phonemes

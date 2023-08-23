@@ -103,7 +103,41 @@ def run(rank, n_gpus, hps):
     _, _, _, epoch_str = utils.load_checkpoint(utils.latest_checkpoint_path(hps.model_dir, "G_*.pth"), net_g, optim_g)
     _, _, _, epoch_str = utils.load_checkpoint(utils.latest_checkpoint_path(hps.model_dir, "D_*.pth"), net_d, optim_d)
     global_step = (epoch_str - 1) * len(train_loader)
-  except:
+  except Exception as error:
+    print("Deu errooooo:", error) 
+    if hps.train.finetune:
+      print("loading pretrained generator")
+      generator_state_dict = torch.load('./pretrained/generator.pth')
+      if hasattr(net_g, 'module'):
+        current_model_dict = net_g.module.state_dict()
+        loaded_state_dict = generator_state_dict['model']
+        new_state_dict={k:v if v.size()==current_model_dict[k].size()  else  current_model_dict[k] for k,v in zip(current_model_dict.keys(), loaded_state_dict.values())}
+        net_g.module.load_state_dict(new_state_dict, strict=False)
+        print("pretrained generator loaded")
+      else:
+        current_model_dict = net_g.state_dict()
+        loaded_state_dict = generator_state_dict['model']
+        new_state_dict={k:v if v.size()==current_model_dict[k].size()  else  current_model_dict[k] for k,v in zip(current_model_dict.keys(), loaded_state_dict.values())}
+        net_g.load_state_dict(new_state_dict, strict=False)
+        print("pretrained generator loaded")
+
+
+      print("loading pretrained discriminator")
+      discriminator_state_dict = torch.load('./pretrained/discriminator.pth')
+      if hasattr(net_d, 'module'):
+        current_model_dict = net_d.module.state_dict()
+        loaded_state_dict = discriminator_state_dict
+        new_state_dict={k:v if v.size()==current_model_dict[k].size()  else  current_model_dict[k] for k,v in zip(current_model_dict.keys(), loaded_state_dict.values())}
+        net_d.module.load_state_dict(new_state_dict, strict=False)
+        print("pretrained discriminator loaded")
+      else:
+        current_model_dict = net_d.state_dict()
+        loaded_state_dict = discriminator_state_dict
+        new_state_dict={k:v if v.size()==current_model_dict[k].size()  else  current_model_dict[k] for k,v in zip(current_model_dict.keys(), loaded_state_dict.values())}
+        net_d.load_state_dict(new_state_dict, strict=False)
+        print("pretrained discriminator loaded")
+  
+
     epoch_str = 1
     global_step = 0
 
