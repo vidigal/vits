@@ -1,46 +1,24 @@
-import json
-from inference import inference_vits
+import inference
+import text_normalizer
+import generator_utils
 import soundfile as sf
+import improve_audio
 
 INPUT_FILE_PATH = './input/prompts.json'
 OUTPUT_PATH = './output'
 SAMPLE_RATE = 22050
 
-# Carrega arquivo JSON com os prompts
-def load_prompts_json():
-    with open(INPUT_FILE_PATH) as file:
-        return json.load(file)
-    
-# Faz alterações no texto, por exemplo, retirar *
-def text_normalize(text):
-    normalized_text = text
-    # Pontuações
-    normalized_text = normalized_text.replace("*", "")
-    normalized_text = normalized_text.replace(":", ".")
-    normalized_text = normalized_text.replace(".", ". ")
-
-    # Palavras
-    normalized_text = normalized_text.replace("bitcoin", "biticonhen")
-    normalized_text = normalized_text.replace("Bitcoin", "biticonhen")
-    
-    normalized_text = normalized_text.replace("moeda", "moéda")
-    normalized_text = normalized_text.replace("Moeda", "Moéda")
-
-    return normalized_text
-
-# realiza inferência e retorna o áudio
-def inference(text):
-    return inference_vits(text)
-
-
 # Execução inicia aqui
-prompts_json = load_prompts_json()
+prompts_json = generator_utils.load_prompts_json(INPUT_FILE_PATH)
 for prompt in prompts_json['prompts']:
     title = prompt['title'] 
     text = prompt['text']
 
     print(f"Gerando audio para: {title}")
-    text_normalized = text_normalize(text)
-    generated_audio = inference(text_normalized)
+    text_normalized = text_normalizer.text_normalize(text)
+    generated_audio = inference.inference_vits(text_normalized)
 
-    sf.write(f"{OUTPUT_PATH}/{title}.wav", generated_audio, SAMPLE_RATE)
+    output_file_path = f"{OUTPUT_PATH}/{title}.wav"
+    sf.write(output_file_path, generated_audio, SAMPLE_RATE)
+
+    generated_audio = improve_audio.add_background_music(f"{OUTPUT_PATH}/{title}.wav")
