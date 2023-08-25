@@ -1,3 +1,5 @@
+## TODO: retirar os imports não utilizados
+
 import nltk
 import numpy as np
 import re
@@ -23,6 +25,10 @@ from text import text_to_sequence
 from scipy.io.wavfile import write
 import soundfile as sf
 
+CONFIG_FILE = "./configs/ljs_base.json"
+MODEL_PATH = f"./logs/prime/{i}.pth"
+FILE_WAV_OUTPUT = f"./output/{i}.wav"
+
 
 def get_text(text, hps):
     text_norm = text_to_sequence(text, hps.data.text_cleaners)
@@ -36,7 +42,7 @@ def split_text(text):
     return text_splited
     
 
-for i in ["G_226000"]:
+for i in ["G_257000"]:
     CONFIG_FILE = "./configs/ljs_base.json"
     MODEL_PATH = f"./logs/prime/{i}.pth"
     FILE_WAV_OUTPUT = f"./output/{i}.wav"
@@ -60,21 +66,26 @@ for i in ["G_226000"]:
     
     frase = f"""
 Esta é a voz {i} que está falando.
-Havia um homem chamado Daniel que sempre teve grandes sonhos e ambições. Desde jovem, ele sonhava em alcançar o sucesso e a prosperidade, não apenas para si mesmo, mas também para sua família e comunidade. Ele cresceu em um bairro modesto, onde a falta de recursos muitas vezes limitava as oportunidades para muitos.
-Determinado a transformar sua vida, Daniel mergulhou de cabeça em seus estudos e desenvolveu habilidades empreendedoras desde cedo. Ele começou a trabalhar enquanto ainda estava na escola, economizando cada centavo para investir em seu futuro. Com determinação e perseverança, ele conseguiu uma bolsa de estudos para a faculdade, onde estudou administração de empresas.
-Depois de se formar, Daniel começou a trabalhar em uma pequena startup. Sua ética de trabalho inabalável e sua capacidade de enxergar oportunidades onde os outros viam obstáculos logo chamaram a atenção de seus colegas e superiores. Com o tempo, ele subiu nas fileiras da empresa e, eventualmente, teve a chance de lançar sua própria ideia de negócio.
-Sua startup cresceu rapidamente, tornando-se um sucesso surpreendente. Daniel havia conseguido transformar sua visão em realidade. Com dedicação, inovação e a capacidade de tomar decisões audaciosas, ele não apenas acumulou riqueza, mas também criou empregos para muitas pessoas em sua comunidade.
-No entanto, o verdadeiro segredo da felicidade de Daniel não estava apenas em sua conquista financeira. Ele nunca esqueceu suas raízes humildes e sempre se lembrou das dificuldades que enfrentou no caminho para o sucesso. Ele usou sua posição para apoiar organizações beneficentes locais, oferecendo bolsas de estudo e programas de capacitação para jovens que se encontravam em situações semelhantes à que ele já estivera.
-Além disso, Daniel cultivou relacionamentos significativos com sua família e amigos. Ele reservava tempo para passar com seus entes queridos, valorizando cada momento compartilhado. Sua atenção aos detalhes e sua capacidade de escutar os outros o tornaram alguém querido por todos que o conheciam.
-À medida que os anos passaram, Daniel continuou a prosperar nos negócios, mas nunca perdeu de vista o que era realmente importante em sua vida. Sua riqueza permitiu-lhe viajar, explorar novas culturas e experimentar diferentes formas de enriquecer sua vida através do conhecimento e das experiências.
-Assim, Daniel se tornou um exemplo de como a riqueza pode ser uma ferramenta para a realização de sonhos e para o bem-estar dos outros. Sua jornada de superação e sucesso não apenas o tornou rico em termos financeiros, mas também o enriqueceu em sabedoria, compaixão e felicidade duradoura. E, acima de tudo, ele encontrou alegria em compartilhar seu sucesso com os outros e em ver as sementes do seu trabalho árduo florescerem em oportunidades para os mais necessitados.
+Dez frases que irão mudar a sua vida.
+I. Cada dia é uma chance de brilhar.
+II. Sorria, a vida é cheia de possibilidades.
+III. Pequenos passos levam a grandes conquistas.
+IV. A positividade transforma desafios em oportunidades.
+V. Seja gentil: isso espalha alegria ao redor.
+VI. Acredite em você mesmo e alcance o impossível.
+VII. O otimismo é a chave para o sucesso.
+VIII. Supere as adversidades com força e coragem.
+IX. Suas ações inspiram outros a serem melhores.
+X. O futuro é promissor para quem mantém positividade.
+
+Conhecimento é o que vai diferenciar você da manada. Inscreva-se para aprimorar-se com mais conteúdos como este.
 """
     
     stn_tst = get_text(frase, hps)
     with torch.no_grad():
         x_tst = stn_tst.cuda().unsqueeze(0)
         x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).cuda()
-        audio = net_g.infer(x_tst, x_tst_lengths, noise_scale=0.667, noise_scale_w=0.8, length_scale=1.0)[0][0,0].data.cpu().float().numpy()
+        audio = net_g.infer(x_tst, x_tst_lengths, noise_scale=0.667, noise_scale_w=0.8, length_scale=1.2)[0][0,0].data.cpu().float().numpy()
 
     # text_to_speech = ""
     # for i in range(100):
