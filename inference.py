@@ -25,11 +25,6 @@ from text import text_to_sequence
 from scipy.io.wavfile import write
 import soundfile as sf
 
-CONFIG_FILE = "./configs/ljs_base.json"
-MODEL_PATH = f"./logs/prime/{i}.pth"
-FILE_WAV_OUTPUT = f"./output/{i}.wav"
-
-
 def get_text(text, hps):
     text_norm = text_to_sequence(text, hps.data.text_cleaners)
     if hps.data.add_blank:
@@ -42,7 +37,7 @@ def split_text(text):
     return text_splited
     
 
-for i in ["G_257000"]:
+for i in ["G_318000"]:
     CONFIG_FILE = "./configs/ljs_base.json"
     MODEL_PATH = f"./logs/prime/{i}.pth"
     FILE_WAV_OUTPUT = f"./output/{i}.wav"
@@ -67,19 +62,17 @@ for i in ["G_257000"]:
     frase = f"""
 Esta é a voz {i} que está falando.
 Dez frases que irão mudar a sua vida.
-I. Cada dia é uma chance de brilhar.
-II. Sorria, a vida é cheia de possibilidades.
-III. Pequenos passos levam a grandes conquistas.
-IV. A positividade transforma desafios em oportunidades.
-V. Seja gentil: isso espalha alegria ao redor.
-VI. Acredite em você mesmo e alcance o impossível.
-VII. O otimismo é a chave para o sucesso.
-VIII. Supere as adversidades com força e coragem.
-IX. Suas ações inspiram outros a serem melhores.
-X. O futuro é promissor para quem mantém positividade.
-
-Conhecimento é o que vai diferenciar você da manada. Inscreva-se para aprimorar-se com mais conteúdos como este.
-"""
+1. Cada dia é uma chance de brilhar.
+2. Sorria, a vida é cheia de possibilidades.
+3. Pequenos passos levam a grandes conquistas.
+4. A positividade transforma desafios em oportunidades.
+5. Seja gentil: isso espalha alegria ao redor.
+6. Acredite em você mesmo e alcance o impossível.
+7. O otimismo é a chave para o sucesso.
+8. Supere as adversidades com força e coragem.
+9. Suas ações inspiram outros a serem melhores.
+10. O futuro é promissor para quem mantém positividade.
+Conhecimento é o que vai diferenciar você da manada. Inscreva-se para aprimorar-se com mais conteúdos como este. """
     
     stn_tst = get_text(frase, hps)
     with torch.no_grad():

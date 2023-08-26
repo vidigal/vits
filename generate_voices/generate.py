@@ -21,4 +21,4 @@ for prompt in prompts_json['prompts']:
     output_file_path = f"{OUTPUT_PATH}/{title}.wav"
     sf.write(output_file_path, generated_audio, SAMPLE_RATE)
 
-    generated_audio = improve_audio.add_background_music(f"{OUTPUT_PATH}/{title}.wav")
+    generated_audio = improve_audio.add_change_pitch_and_background_music(f"{OUTPUT_PATH}/{title}.wav")
