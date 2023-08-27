@@ -21,7 +21,7 @@ from text import text_to_sequence
 from scipy.io.wavfile import write
 
 CONFIG_FILE = "../configs/ljs_base.json"
-MODEL_PATH = f"../logs/prime/G_320000.pth"
+MODEL_PATH = f"../logs/prime/G_350000.pth"
 
 def get_text(text, hps):
     text_norm = text_to_sequence(text, hps.data.text_cleaners)
