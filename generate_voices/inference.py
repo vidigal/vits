@@ -47,8 +47,7 @@ def inference_vits(text):
     _ = utils.load_checkpoint(MODEL_PATH, net_g, None)
 
     silencio = np.zeros(int(0.8 * hps.data.sampling_rate))
-    frase_inscreva_se = "Se você se inscrever no canal, você vai se tornar um milionário. Você não tem nada a perder."
-
+    frase_inscreva_se = "Inscreva-se no canal para conhecer mais fatos curiosos sobre diferentes assuntos. Assim, você vai aumentar seu connhecimento. Você não tem nada a perder." 
 
     text_frases =  [e+"." for e in text.split(".") if e]
 

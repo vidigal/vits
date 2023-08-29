@@ -15,7 +15,7 @@ def add_change_pitch_and_background_music(voice_audio_file_path):
     print(f"Música de fundo selecionada: {selected_background_file_name}")
     selected_background_sound = AudioSegment.from_file(f"{BACKGROUND_AUDIOS_PATH}/{selected_background_file_name}")
     
-    selected_background_sound = selected_background_sound - 28
+    selected_background_sound = selected_background_sound - 23
 
     time_filled = 0
     combined_audio = voice_audio
