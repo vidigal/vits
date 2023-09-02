@@ -13,4 +13,7 @@ def text_normalize(text):
     normalized_text = normalized_text.replace("moeda", "moéda")
     normalized_text = normalized_text.replace("Moeda", "Moéda")
 
+    normalized_text = normalized_text.replace("Mindfulness", "maidifulnés")
+    normalized_text = normalized_text.replace("mindfulness", "maidifulnés")
+
     return normalized_text
