@@ -21,7 +21,7 @@ from text import text_to_sequence
 from scipy.io.wavfile import write
 
 CONFIG_FILE = "../configs/ljs_base.json"
-MODEL_PATH = f"../logs/prime/G_350000.pth"
+MODEL_PATH = f"../logs/prime/G_522000.pth"
 
 def get_text(text, hps):
     text_norm = text_to_sequence(text, hps.data.text_cleaners)
@@ -47,7 +47,7 @@ def inference_vits(text):
     _ = utils.load_checkpoint(MODEL_PATH, net_g, None)
 
     silencio = np.zeros(int(0.8 * hps.data.sampling_rate))
-    frase_inscreva_se = "Inscreva-se no canal para conhecer mais fatos curiosos sobre diferentes assuntos. Assim, você vai aumentar seu connhecimento. Você não tem nada a perder." 
+    #frase_inscreva_se = "Inscreva-se no canal e ative as notificações para ver mais vídeos como esses. Assim, você vai aumentar seu conhecimento. Você não tem nada a perder, e ajuda o próximo." 
 
     text_frases =  [e+"." for e in text.split(".") if e]
 
@@ -56,14 +56,15 @@ def inference_vits(text):
         # Gerar audio principal
         x_tst = stn_tst.cpu().unsqueeze(0)
         x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).cpu()
-        audio_principal = net_g.infer(x_tst, x_tst_lengths, noise_scale=0.667, noise_scale_w=0.8, length_scale=1.0)[0][0,0].data.cpu().float().numpy()
+        audio_principal = net_g.infer(x_tst, x_tst_lengths, noise_scale=0.667, noise_scale_w=0.8, length_scale=0.7)[0][0,0].data.cpu().float().numpy()
         
         #Gerar frase final
-        stn_tst = get_text(frase_inscreva_se, hps)
-        x_tst = stn_tst.cpu().unsqueeze(0)
-        x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).cpu()
-        audio_inscreva_se = net_g.infer(x_tst, x_tst_lengths, noise_scale=0.667, noise_scale_w=0.8, length_scale=1.0)[0][0,0].data.cpu().float().numpy()
+        #stn_tst = get_text(frase_inscreva_se, hps)
+        #x_tst = stn_tst.cpu().unsqueeze(0)
+        #x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).cpu()
+        #audio_inscreva_se = net_g.infer(x_tst, x_tst_lengths, noise_scale=0.667, noise_scale_w=0.8, length_scale=1.0)[0][0,0].data.cpu().float().numpy()
     
-    audio_final = np.concatenate((audio_principal, silencio, audio_inscreva_se))
+    #audio_final = np.concatenate((audio_principal, silencio, audio_inscreva_se))
+    audio_final = np.concatenate((audio_principal, silencio))
     
     return audio_final
