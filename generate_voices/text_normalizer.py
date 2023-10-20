@@ -31,4 +31,7 @@ def text_normalize(text):
     normalized_text = normalized_text.replace("youtube", "iuu tube")
     normalized_text = normalized_text.replace("Youtube", "iuu tube")
 
+    normalized_text = normalized_text.replace("hobbies", "róbis")
+    normalized_text = normalized_text.replace("Hobbies", "róbis")
+
     return normalized_text
